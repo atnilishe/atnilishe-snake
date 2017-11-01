@@ -8,6 +8,14 @@ function Snake(x, y, color, playerInfo) {
         x: x,
         y: y
     };
+    console.log(playerInfo.length);
+    if(playerInfo.length)
+    {
+        for (var i = 0; i < playerInfo.length; i++)
+        {
+            this.addTail();
+        }
+    }
 }
 
 method.addTail = function() {

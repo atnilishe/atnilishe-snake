@@ -16,6 +16,21 @@ app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
+
+// DATABASE
+// ===============================================
+
+var Datastore = require('nedb');
+
+var db = new Datastore({
+      filename: 'players.db', 
+      autoload: true,
+      timestampData: true
+});
+
+// ===============================================
+
+
 // Запуск сервера
 server.listen(port, function() {
     console.log('Listening on ' + port);
@@ -26,11 +41,31 @@ var game_angine = new Game();
 game_angine.addFood();
 
 io.on('connection', function(socket) {
-    socket.on('new player', function(player) {
+    socket.on('new player', function(playerInfo) {
         try {
-            console.log('Add new player ' + player.name);
-            game_angine.addPlayer(socket.id, player);
-            io.sockets.emit('state', game_angine.getGameState());
+            db.findOne({name: playerInfo.name},{}, function(err, player) {
+                if (err) console.log(err);
+                if(player)
+                {
+                    console.log('Finde player: ' + playerInfo.name);
+                    playerInfo.length = player.length;
+                }
+                else
+                {
+                    console.log('Add player: ' + playerInfo.name);
+                    var Nplayer = {
+                        name: playerInfo.name,
+                        length: 0
+                      };
+                      
+                      db.insert(Nplayer, function(err, newPlayer) {
+                        if (err) console.log(err);
+                        console.log(newPlayer);
+                      });
+                }
+                game_angine.addPlayer(socket.id, playerInfo);
+                io.sockets.emit('state', game_angine.getGameState());
+              });       
         } catch (error) {
             console.log('Error on new player' + error.name + ":" + error.message + "\n" + error.stack);
         }
