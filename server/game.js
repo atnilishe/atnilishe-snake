@@ -1,5 +1,6 @@
 var method = Game.prototype;
 
+var PlayersRepository = require("./playersRepository.js");
 var Snake = require("./snake.js");
 var Food = require("./food.js");
 
@@ -8,6 +9,7 @@ function Game() {
     this.sizeY = 30;
     this.players = {};
     this.foods = new Array(0);
+    this.playersRepository = new PlayersRepository();
 }
 
 method.getGameState = function() {
@@ -17,18 +19,37 @@ method.getGameState = function() {
     return state;
 };
 
-method.addPlayer = function(playerId, playerInfo) {
+method.GetRandomPoint = function(){
+    var point = {};
     var letters = '0123456789ABCDEF';
-    var color = '#';
+    point.color = '#';
     for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+        point.color += letters[Math.floor(Math.random() * 16)];
     }
 
-    var x = Math.floor(Math.random() * (this.sizeX - 1)) + 1;
-    var y = Math.floor(Math.random() * (this.sizeY - 1)) + 1;
-    console.log('PLAYER - add x:' + x + 'y:' + y);
+    point.x = Math.floor(Math.random() * (this.sizeX - 1)) + 1;
+    point.y = Math.floor(Math.random() * (this.sizeY - 1)) + 1;
 
-    this.players[playerId] = new Snake(x, y, color, playerInfo);
+    return point;
+}
+
+method.addPlayer = function(playerId, playerInfo, callback) {
+    var game = this;
+    this.playersRepository.findPlayerByName(playerInfo.name,function(player) {
+        if(player){
+            playerInfo.length = player.length;
+        }
+        else{
+            var newPlayer = {
+                name:playerInfo.name,
+                length:0
+            };
+            game.playersRepository.createPlayer(newPlayer);
+        }
+        var point = game.GetRandomPoint();
+        game.players[playerId] = new Snake(point.x, point.y, point.color, playerInfo);
+        callback();
+    });
 };
 
 method.deletePlayer = function(playerId) {
@@ -48,6 +69,7 @@ method.processMovement = function(movement, playerId) {
         if (item.x === player.body[0].x && item.y === player.body[0].y) {
             this.foods.splice(index, 1);
             player.addTail();
+            this.playersRepository.updatePlayer(player);
             this.addFood();
         }
     }, this);
@@ -82,17 +104,8 @@ method.isPlayer = function(movement, player) {
 };
 
 method.addFood = function() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-
-    var x = Math.floor(Math.random() * (this.sizeX - 1)) + 1;
-    var y = Math.floor(Math.random() * (this.sizeY - 1)) + 1;
-    console.log('FOOD - add x:' + x + 'y:' + y);
-
-    this.foods.push(new Food(x, y, color));
+    var point = this.GetRandomPoint();
+    this.foods.push(new Food(point.x, point.y, point.color));
 };
 
 module.exports = Game;
