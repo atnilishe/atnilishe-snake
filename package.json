@@ -1,7 +1,7 @@
 {
-  "name": "test_game",
+  "name": "snake_world",
   "version": "1.0.0",
-  "description": "test description",
+  "description": "my first node.js game",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
