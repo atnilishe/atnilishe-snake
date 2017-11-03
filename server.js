@@ -65,6 +65,7 @@ var game_angine = new Game();
 game_angine.addFood();
 
 io.on('connection', function(socket) {
+    // TODO: не пускать уже играющих игроков
     var user = socket.handshake.session.userData;
     if(user == undefined)
         {
