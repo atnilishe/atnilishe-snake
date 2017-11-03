@@ -37,9 +37,7 @@ function right() {
     movement.down = false;
 }
 
-function CreatePlayer() {
-    var playerName = document.getElementById('playerName');
-    socket.emit('new player', { name: playerName.value });
+    socket.emit('new player');
 
     var canvas = document.getElementById('canvas');
     var gameStat = document.getElementById('gameStat');
@@ -103,4 +101,3 @@ function CreatePlayer() {
         movement.right = false;
         movement.down = false;
     });
-}

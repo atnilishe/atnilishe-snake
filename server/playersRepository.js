@@ -19,15 +19,15 @@ method.createPlayer = function(player) {
 
 method.updatePlayer = function(player) {
   this.db.update(
-    {name: player.playerInfo.name},
-    {name: player.playerInfo.name, length: player.body.length},
+    {uid: player.playerInfo.uid},
+    {uid: player.playerInfo.uid, name: player.playerInfo.name, length: player.body.length},
     function(err, numberOfUpdated, upsert) {
       if (err) console.log(err);
   });
 };
 
-method.findPlayerByName = function(name, callback) {
-    this.db.findOne({name: name},{}, function(err, player) {
+method.findPlayerByUid = function(uid, callback) {
+    this.db.findOne({uid: uid},{}, function(err, player) {
         if (err) console.log(err);
         callback(player);
     });

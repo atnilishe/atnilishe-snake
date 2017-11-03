@@ -35,12 +35,13 @@ method.GetRandomPoint = function(){
 
 method.addPlayer = function(playerId, playerInfo, callback) {
     var game = this;
-    this.playersRepository.findPlayerByName(playerInfo.name,function(player) {
+    this.playersRepository.findPlayerByUid(playerInfo.uid,function(player) {
         if(player){
             playerInfo.length = player.length;
         }
         else{
             var newPlayer = {
+                uid:playerInfo.uid,
                 name:playerInfo.name,
                 length:0
             };

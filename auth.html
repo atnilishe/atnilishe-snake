@@ -1,10 +1,21 @@
 <html>    
     <head>
         <title>Snake town</title>
+        <style>
+            .center {               
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                margin-top: -100px;
+                margin-left: -200px;        
+            }
+        </style>
+        <script src="//ulogin.ru/js/ulogin.js"></script>
     </head>    
     <body>
-        <script src="//ulogin.ru/js/ulogin.js"></script>
-        <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=facebook,googleplus,vkontakte,google,liveid,linkedin;hidden=other;redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fplayers;mobilebuttons=0;"></div>
+        <div class="center">
+                <img src="/client/logo.png">
+                <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=facebook,googleplus,vkontakte,google,liveid,linkedin;hidden=other;redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fplayers;mobilebuttons=0;"></div>
+        </div>
     </body>
-    <script src="//ulogin.ru/js/ulogin.js"></script>
 </html>
