@@ -91,28 +91,6 @@ socket.on('state', function (state) {
     }
 });
 
-document.addEventListener('keydown', function (event) {
-    switch (event.keyCode) {
-        case 37: // left
-        case 65: // A
-            left();
-            break;
-        case 38: // up
-        case 87: // W
-            up();
-            break;
-        case 39: // right
-        case 68: // D
-            right();
-            break;
-        case 40: // down
-        case 83: // S
-            down();
-            break;
-    }
-    socket.emit('movement', movement);
-});
-
 function orientationchange() {
     switch (window.orientation) {
         case 0:
@@ -141,28 +119,101 @@ window.addEventListener("orientationchange", function () {
 
 // var md = new MobileDetect(window.navigator.userAgent);
 // if(md.mobile()){}
-var manager = nipplejs.create({
-    color: 'red',
-    size: 150,
-    zone: document.getElementById('gameController'),
-    mode: 'static',
-    position: { left: '50%', top: '50%' },
-});
 
-manager[0].on('dir:up dir:down dir:left dir:right', function (evt) {
-    switch (evt.type) {
-        case 'dir:up':
-            up();
-            break;
-        case 'dir:down':
-            down();
-            break;
-        case 'dir:left':
-            left();
-            break;
-        case 'dir:right':
-            right();
-            break;
+
+function keyboard() {
+    document.getElementById('controllerSelect').style.visibility = 'hidden';
+    document.addEventListener('keydown', function (event) {
+        switch (event.keyCode) {
+            case 37: // left
+            case 65: // A
+                left();
+                break;
+            case 38: // up
+            case 87: // W
+                up();
+                break;
+            case 39: // right
+            case 68: // D
+                right();
+                break;
+            case 40: // down
+            case 83: // S
+                down();
+                break;
+        }
+        socket.emit('movement', movement);
+    });
+}
+
+function joystick() {
+    document.getElementById('controllerSelect').style.visibility = 'hidden';
+
+    var manager = nipplejs.create({
+        color: 'red',
+        size: 150,
+        zone: document.getElementById('gameController'),
+        mode: 'static',
+        position: { left: '50%', top: '50%' },
+    });
+
+    manager[0].on('dir:up dir:down dir:left dir:right', function (evt) {
+        switch (evt.type) {
+            case 'dir:up':
+                up();
+                break;
+            case 'dir:down':
+                down();
+                break;
+            case 'dir:left':
+                left();
+                break;
+            case 'dir:right':
+                right();
+                break;
+        }
+        socket.emit('movement', movement);
+    });
+}
+
+function accelerometer() {
+    document.getElementById('controllerSelect').style.visibility = 'hidden';
+    window.addEventListener("devicemotion", function (event) {
+        var x = Math.floor(event.accelerationIncludingGravity.x);
+        var y = Math.floor(event.accelerationIncludingGravity.y);
+        // var z = Math.floor(event.accelerationIncludingGravity.z);
+
+        if (Math.abs(x) > Math.abs(y)) {
+            if (x > 0) {
+                down();
+            } else {
+                up();
+            }
+        }
+        else {
+            if (y > 0) {
+                right();
+            } else {
+                left();
+            }
+        }
+        socket.emit('movement', movement);
+    }, false);
+}
+
+function remotecontrol() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", '/remote', true);
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState != 4) return;
+
+        if (xmlHttp.status != 200) {
+            alert(xmlHttp.status + ': ' + xmlHttp.statusText);
+        } else {
+            var controllerSelect = document.getElementById('controllerSelect');
+            controllerSelect.innerText = ("Откройте ссылку на телефоне \n" + document.origin + "/remote/" + JSON.parse(xmlHttp.responseText));
+            controllerSelect.style.visibility = 'visible';
+        }
     }
-    socket.emit('movement', movement);
-});
+    xmlHttp.send(null);
+}

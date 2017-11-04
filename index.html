@@ -64,7 +64,12 @@
             <canvas id="canvas"></canvas>
         </div>
         <div class="right" id="gameController">
-
+            <div id="controllerSelect">
+                <input type="button" value="клавиатура(W,S,D,A или стрелочки)" onclick="keyboard()" />
+                <input type="button" value="экранный джойстик" onclick="joystick()" />
+                <input type="button" value="акселерометр" onclick="accelerometer()" />
+                <input type="button" value="удаленное управление" onclick="remotecontrol()" />
+            </div>
         </div>
     </div>
 </body>

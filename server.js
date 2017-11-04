@@ -37,6 +37,16 @@ app.get('/', function (req, response) {
     response.sendFile(path.join(__dirname, 'auth.html'));
 });
 
+app.get('/remote', function (req, res) {
+    res.json(req.session.userData.uid);
+  });
+
+app.get('/remote/:key', function (req, response) {
+    req.session.userData = {uid: req.params.key};
+    req.session.save();
+    response.sendFile(path.join(__dirname, 'controller.html'));
+});
+
 app.get('/game', function (req, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -92,7 +102,7 @@ io.on('connection', function (socket) {
             player = {};
             player.name = user.first_name + ' ' + user.last_name;
             player.id = user.uid;
-            game_angine.addPlayer(socket.id, player, function () {
+            game_angine.addPlayer(player.id, player, function () {
                 io.sockets.emit('state', game_angine.getGameState());
             });
         } catch (error) {
@@ -101,14 +111,18 @@ io.on('connection', function (socket) {
     });
     socket.on('movement', function (data) {
         try {
-            game_angine.setDirection(data, socket.id);
+            var user = socket.handshake.session.userData;
+            player.id = user.uid;
+            game_angine.setDirection(data, player.id);
         } catch (error) {
             console.log('Error on movement' + error.name + ":" + error.message + "\n" + error.stack);
         }
     });
     socket.on('disconnect', function () {
         try {
-            game_angine.deletePlayer(socket.id);
+            var user = socket.handshake.session.userData;
+            player.id = user.uid;
+            game_angine.deletePlayer(player.id);
             io.sockets.emit('state', game_angine.getGameState());
         } catch (error) {
             console.log('Error on disconnect' + error.name + ":" + error.message + "\n" + error.stack);
