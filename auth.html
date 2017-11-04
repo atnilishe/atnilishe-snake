@@ -16,12 +16,21 @@
 
 <body>
     <div class="center">
-        <img src="/client/logo.png" style="margin-bottom:20px">
         <div>
-            <div style="float:left;">
+            <img src="/client/logo.png" style="margin-bottom:20px">
+        </div>
+        <div style="background:rgba(184, 233, 180, 0.479);"> 
+            <div style="align-content: center">
                 <img src="/client/auth.png">
             </div>
-            <div style="float:left;" id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=facebook,googleplus,vkontakte,google,liveid,linkedin;hidden=other;redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fplayers;mobilebuttons=0;"></div>
+            <form action="/game" method="post">
+                <input type="text" name="nickname" value="username" />
+                <input type="submit" value="Play"/>
+            </form>
+            <div>
+                <img src="/client/or.png">
+            </div>
+            <div id="uLogin"></div>
         </div>
     </div>
 </body>

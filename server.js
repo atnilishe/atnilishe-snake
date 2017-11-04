@@ -37,6 +37,14 @@ app.get('/game', function (req, response) {
     response.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.post('/game', function (req, response) {
+    var nickname = req.body.nickname;
+    req.session.userData = { uid: nickname, first_name: nickname, last_name: '' };
+    req.session.save();
+    response.writeHead(302, { 'Location': '/game' });
+    response.end();
+});
+
 app.post('/players', function (req, res) {
     var url = 'http://ulogin.ru/token.php?token=' + req.body.token + '&host=' + 'localhost';
     var response = res;
@@ -45,9 +53,7 @@ app.post('/players', function (req, res) {
             // TODO: create user data
             req.session.userData = JSON.parse(new Buffer(d).toString());
             req.session.save();
-            response.writeHead(302, {
-                'Location': '/game'
-            });
+            response.writeHead(302, { 'Location': '/game' });
             response.end();
         });
     }).on('error', (e) => {
@@ -64,7 +70,7 @@ var Game = require("./server/game.js");
 var game_angine = new Game();
 game_angine.addFood();
 
-setInterval(function() {
+setInterval(function () {
     game_angine.makeMove();
     io.sockets.emit('state', game_angine.getGameState());
 }, 200);
@@ -92,8 +98,6 @@ io.on('connection', function (socket) {
     socket.on('movement', function (data) {
         try {
             game_angine.setDirection(data, socket.id);
-            // game_angine.processMovement(data, socket.id);
-            // io.sockets.emit('state', game_angine.getGameState());
         } catch (error) {
             console.log('Error on movement' + error.name + ":" + error.message + "\n" + error.stack);
         }
