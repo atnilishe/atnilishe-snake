@@ -1,6 +1,10 @@
-MIT License
+<!--
 
-Copyright (c) [year] [fullname]
+Learning to access sensors in JavaScript.
+
+The MIT License (MIT)
+
+Copyright (c) 2016 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +23,34 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Sensors</title>
+<script type="text/javascript">
+function motion(event){
+  document.getElementById("accelerometer").innerText = "Accelerometer:\n"
+    + Math.floor(event.accelerationIncludingGravity.x) + "\n"
+    + Math.floor(event.accelerationIncludingGravity.y) + "\n"
+    + Math.floor(event.accelerationIncludingGravity.z);
+}
+
+function go(){
+  if(window.DeviceMotionEvent){
+    window.addEventListener("devicemotion", motion, false);
+  }else{
+    var status = document.getElementById("status");
+    status.innerHTML = status.innerHTML.replace(
+      "is supported", "is not supported"
+    );
+  }
+}
+</script>
+</head>
+<body onload="go();">
+<div id="accelerometer"></div>
+</body>
+</html>
