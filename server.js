@@ -28,6 +28,10 @@ io.use(sharedsession(session, {
 app.set('port', port);
 app.use('/client', express.static(__dirname + '/client'));
 
+app.get('/favicon.ico', function (req, response) {
+    response.sendFile(path.join(__dirname, 'favicon.ico'));
+});
+
 // Маршруты
 app.get('/', function (req, response) {
     response.sendFile(path.join(__dirname, 'auth.html'));

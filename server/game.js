@@ -6,7 +6,7 @@ User = require("./user.js")
 
 function Game() {
     this.sizeX = 40;
-    this.sizeY = 30;
+    this.sizeY = 40;
     this.players = {};
     this.foods = new Array(0);
 }
@@ -116,7 +116,6 @@ method.setDirection = function (movement, playerId) {
 method.makeMove = function (playerId) {
     for (var index in this.players) {
         var player = this.players[index];
-        // var player = this.players[playerId] || {}
         player.prototype = Snake.prototype;
         var movement = player.movement;
         if (this.isMapWall(movement, player) == false && this.isPlayer(movement, player) == false) {

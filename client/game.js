@@ -1,7 +1,5 @@
 var socket = io();
 
-var cellSize = 20;
-
 var movement = {
     up: false,
     down: false,
@@ -47,17 +45,25 @@ function idle() {
 
 socket.emit('new player');
 
-setInterval(function () {
-    // socket.emit('movement', movement);
-}, 200);
-
-var canvas = document.getElementById('canvas');
-var gameStat = document.getElementById('gameStat');
-canvas.width = 800;
-canvas.height = 600;
-var context = canvas.getContext('2d');
 socket.on('state', function (state) {
-    context.clearRect(0, 0, 800, 600);
+
+    var gameStat = document.getElementById('gameStat');
+    var canvas = document.getElementById('canvas');
+
+    if (window.innerHeight > window.innerWidth) {
+        canvas.style.width = window.innerWidth - 10;
+        canvas.style.height = canvas.style.width;
+    } else {
+        canvas.style.height = window.innerHeight - 10;
+        canvas.style.width = canvas.style.height;
+    }
+
+    var cellSize = 20;
+    canvas.height = 800;
+    canvas.width = 800;
+    var context = canvas.getContext('2d');
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
     gameStat.innerHTML = "";
     for (var id in state.players) {
         var player = state.players[id];
@@ -107,27 +113,56 @@ document.addEventListener('keydown', function (event) {
     socket.emit('movement', movement);
 });
 
-var manager = nipplejs.create({ color: 'red', size: 300 });
+function orientationchange() {
+    switch (window.orientation) {
+        case 0:
+            // portraitspace
+            var gameStat = document.getElementById('gameStat');
+            gameStat.className = 'down-left';
+            var gameController = document.getElementById('gameController');
+            gameController.className = 'down-right';
+            break;
+        default:
+            // landspace
+            var gameStat = document.getElementById('gameStat');
+            gameStat.className = 'left';
+            var gameController = document.getElementById('gameController');
+            gameController.className = 'right';
+            break;
+    }
 
-manager.on('added', function (evt, nipple) {
-    nipple.on('dir:up dir:down dir:left dir:right', function (evt) {
-        switch (evt.type) {
-            case 'dir:up':
-                up();
-                break;
-            case 'dir:down':
-                down();
-                break;
-            case 'dir:left':
-                left();
-                break;
-            case 'dir:right':
-                right();
-                break;
-        }
-        socket.emit('movement', movement);
-    });
-}).on('removed', function (evt, nipple) {
-    nipple.off('dir:up dir:down dir:left dir:right');
+
+}
+orientationchange();
+
+window.addEventListener("orientationchange", function () {
+    orientationchange();
+}, false);
+
+// var md = new MobileDetect(window.navigator.userAgent);
+// if(md.mobile()){}
+var manager = nipplejs.create({
+    color: 'red',
+    size: 150,
+    zone: document.getElementById('gameController'),
+    mode: 'static',
+    position: { left: '50%', top: '50%' },
 });
 
+manager[0].on('dir:up dir:down dir:left dir:right', function (evt) {
+    switch (evt.type) {
+        case 'dir:up':
+            up();
+            break;
+        case 'dir:down':
+            down();
+            break;
+        case 'dir:left':
+            left();
+            break;
+        case 'dir:right':
+            right();
+            break;
+    }
+    socket.emit('movement', movement);
+});

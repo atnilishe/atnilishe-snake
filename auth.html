@@ -3,29 +3,38 @@
 <head>
     <title>Snake town</title>
     <style>
+        html {
+            display: block;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            align-content: center;
+            vertical-align: middle;
+            margin: 0px;
+        }
+
         .center {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            margin-top: -100px;
-            margin-left: -200px;
+            align-content: center;
+            width: 100%;
         }
     </style>
     <script src="//ulogin.ru/js/ulogin.js"></script>
 </head>
 
 <body>
-    <div class="center">
+    <div class="center" style="height: 33%" align="center">
         <div>
-            <img src="/client/logo.png" style="margin-bottom:20px">
+            <img src="/client/logo.png">
         </div>
-        <div style="background:rgba(184, 233, 180, 0.479);"> 
-            <div style="align-content: center">
+        <div>
+            <div>
                 <img src="/client/auth.png">
             </div>
             <form action="/game" method="post">
                 <input type="text" name="nickname" value="username" />
-                <input type="submit" value="Play"/>
+                <input type="submit" value="Play" />
             </form>
             <div>
                 <img src="/client/or.png">
