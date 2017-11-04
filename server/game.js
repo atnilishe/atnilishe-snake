@@ -1,25 +1,24 @@
 var method = Game.prototype;
 
-var PlayersRepository = require("./playersRepository.js");
-var Snake = require("./snake.js");
-var Food = require("./food.js");
+Snake = require("./snake.js");
+Food = require("./food.js");
+User = require("./user.js")
 
 function Game() {
     this.sizeX = 40;
     this.sizeY = 30;
     this.players = {};
     this.foods = new Array(0);
-    this.playersRepository = new PlayersRepository();
 }
 
-method.getGameState = function() {
+method.getGameState = function () {
     var state = {};
     state.players = this.players;
     state.foods = this.foods;
     return state;
 };
 
-method.GetRandomPoint = function(){
+method.GetRandomPoint = function () {
     var point = {};
     var letters = '0123456789ABCDEF';
     point.color = '#';
@@ -33,50 +32,50 @@ method.GetRandomPoint = function(){
     return point;
 }
 
-method.addPlayer = function(playerId, playerInfo, callback) {
+method.addPlayer = function (playerId, player, callback) {
     var game = this;
-    this.playersRepository.findPlayerByUid(playerInfo.uid,function(player) {
-        if(player){
-            playerInfo.length = player.length;
-        }
-        else{
-            var newPlayer = {
-                uid:playerInfo.uid,
-                name:playerInfo.name,
-                length:0
-            };
-            game.playersRepository.createPlayer(newPlayer);
-        }
+    User.findById(player.id, function (err, user) {
         var point = game.GetRandomPoint();
-        game.players[playerId] = new Snake(point.x, point.y, point.color, playerInfo);
+        if (user.data.name == null) {
+            user = new User(player);
+            user.set('color', point.color);
+            user.save(function (err, newUser) {
+                if (err) console.log(err);
+                else console.log("New user: ", newUser);
+            });
+        }
+        game.players[playerId] = new Snake(point.x, point.y, user);
         callback();
     });
 };
 
-method.deletePlayer = function(playerId) {
+method.deletePlayer = function (playerId) {
     delete this.players[playerId];
 };
 
-method.processMovement = function(movement, playerId) {
+method.processMovement = function (movement, playerId) {
     var player = this.players[playerId] || {}
     player.prototype = Snake.prototype;
 
     if (this.isMapWall(movement, player) == false && this.isPlayer(movement, player) == false) {
-        player.movePlayer(movement);
+        player.moveSnake(movement);
     }
 
     // is food
-    this.foods.forEach(function(item, index, array) {
+    this.foods.forEach(function (item, index, array) {
         if (item.x === player.body[0].x && item.y === player.body[0].y) {
             this.foods.splice(index, 1);
             player.addTail();
-            this.playersRepository.updatePlayer(player);
+            player.user.save(function (err, user) {
+                if (err) console.log(err);
+                else console.log("User updated: ", user);
+            });
             this.addFood();
         }
     }, this);
 };
 
-method.isMapWall = function(movement, player) {
+method.isMapWall = function (movement, player) {
     return (
         (movement.up && player.body[0].y == 1) ||
         (movement.down && player.body[0].y == this.sizeY - 1) ||
@@ -85,7 +84,7 @@ method.isMapWall = function(movement, player) {
     );
 };
 
-method.isPlayer = function(movement, player) {
+method.isPlayer = function (movement, player) {
     for (var playerId in this.players) {
         var mplayer = this.players[playerId];
         if (player === mplayer) continue;
@@ -104,9 +103,39 @@ method.isPlayer = function(movement, player) {
     return false;
 };
 
-method.addFood = function() {
+method.addFood = function () {
     var point = this.GetRandomPoint();
     this.foods.push(new Food(point.x, point.y, point.color));
+};
+
+method.setDirection = function (movement, playerId) {
+    var player = this.players[playerId] || {}
+    player.movement = movement;
+}
+
+method.makeMove = function (playerId) {
+    for (var index in this.players) {
+        var player = this.players[index];
+        // var player = this.players[playerId] || {}
+        player.prototype = Snake.prototype;
+        var movement = player.movement;
+        if (this.isMapWall(movement, player) == false && this.isPlayer(movement, player) == false) {
+            player.moveSnake(movement);
+        }
+
+        // is food
+        this.foods.forEach(function (item, index, array) {
+            if (item.x === player.body[0].x && item.y === player.body[0].y) {
+                this.foods.splice(index, 1);
+                player.addTail();
+                player.user.save(function (err, user) {
+                    if (err) console.log(err);
+                    else console.log("User updated: ", user);
+                });
+                this.addFood();
+            }
+        }, this);
+    }
 };
 
 module.exports = Game;

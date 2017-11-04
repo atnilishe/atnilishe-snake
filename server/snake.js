@@ -1,33 +1,32 @@
 var method = Snake.prototype;
 
-function Snake(x, y, color, playerInfo) {
-    this.playerInfo = playerInfo;
-    this.color = color;
-    this.body = { length: 0 };
+function Snake(x, y, user) {
+    this.user = user;
+    this.body = {};
+    this.movement = {};
     this.body[0] = {
         x: x,
         y: y
     };
-    console.log(playerInfo.length);
-    if(playerInfo.length)
-    {
-        for (var i = 0; i < playerInfo.length; i++)
-        {
-            this.addTail();
-        }
+
+    for (var i = 0; i <= user.data.length; i++) {
+        this.body[i] = {
+            x: this.body[0].x,
+            y: this.body[0].y
+        };
     }
 }
 
-method.addTail = function() {
-    this.body.length += 1;
-    this.body[this.body.length] = {
+method.addTail = function () {
+    this.user.data.length += 1;
+    this.body[this.user.data.length] = {
         x: this.body[0].x,
         y: this.body[0].y
     };
 };
 
-method.movePlayer = function(movement) {
-    for (var i = this.body.length; i > 0; i--) {
+method.moveSnake = function (movement) {
+    for (var i = this.user.data.length; i > 0; i--) {
         this.body[i].x = this.body[i - 1].x;
         this.body[i].y = this.body[i - 1].y;
     }
