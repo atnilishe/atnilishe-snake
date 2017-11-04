@@ -107,7 +107,7 @@ document.addEventListener('keydown', function (event) {
     socket.emit('movement', movement);
 });
 
-var manager = nipplejs.create({ color: 'red' });
+var manager = nipplejs.create({ color: 'red', size: 300 });
 
 manager.on('added', function (evt, nipple) {
     nipple.on('dir:up dir:down dir:left dir:right', function (evt) {
