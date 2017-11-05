@@ -16,12 +16,18 @@ var db = {
         return this;
     },
     run: function (callback) {
-        if (!this.data) this.data = this.query;
-        this.datastore.update(this.query, this.data, { upsert: true, returnUpdatedDocs: true },
-            function (err, numberOfUpdated, affectedDocuments, upsert) {
+        if (this.data) {
+            this.datastore.update(this.query, this.data, { upsert: true, returnUpdatedDocs: true },
+                function (err, numberOfUpdated, affectedDocuments, upsert) {
+                    if (err) callback(err);
+                    else callback(null, affectedDocuments || {});
+                });
+        } else {
+            this.datastore.find(this.query, function (err, docs) {
                 if (err) callback(err);
-                else callback(null, affectedDocuments || {});
-            });
+                else callback(null, docs[0] || {});
+              });
+        }
     }
 };
 
