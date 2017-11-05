@@ -8,6 +8,7 @@ var db = {
             timestampData: true
         });
         this.query = query;
+        this.data = undefined;
         return this;
     },
     update: function (data) {
