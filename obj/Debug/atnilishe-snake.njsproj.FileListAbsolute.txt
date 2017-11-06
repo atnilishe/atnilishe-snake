@@ -1,0 +1,2 @@
+D:\TFS\github\atnilishe-anake\obj\Debug\atnilishe-snake.njsproj.CoreCompileInputs.cache
+D:\TFS\github\atnilishe-anake\bin\Microsoft.NodejsTools.WebRole.dll

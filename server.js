@@ -34,21 +34,21 @@ app.get('/favicon.ico', function (req, response) {
 
 // Маршруты
 app.get('/', function (req, response) {
-    response.sendFile(path.join(__dirname, 'auth.html'));
+    response.sendFile(path.join(__dirname, './client/views/auth.html'));
 });
 
 app.get('/remote', function (req, res) {
     res.json(req.session.userData.uid);
-  });
+});
 
 app.get('/remote/:key', function (req, response) {
-    req.session.userData = {uid: req.params.key};
+    req.session.userData = { uid: req.params.key };
     req.session.save();
-    response.sendFile(path.join(__dirname, 'controller.html'));
+    response.sendFile(path.join(__dirname, './client/views/controller.html'));
 });
 
 app.get('/game', function (req, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
+    response.sendFile(path.join(__dirname, './client/views/index.html'));
 });
 
 app.post('/game', function (req, response) {
