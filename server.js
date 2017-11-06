@@ -34,6 +34,10 @@ app.get('/favicon.ico', function (req, response) {
 
 // Маршруты
 app.get('/', function (req, response) {
+    response.sendFile(path.join(__dirname, './client/views/index.html'));
+});
+
+app.get('/auth', function (req, response) {
     response.sendFile(path.join(__dirname, './client/views/auth.html'));
 });
 
@@ -48,7 +52,7 @@ app.get('/remote/:key', function (req, response) {
 });
 
 app.get('/game', function (req, response) {
-    response.sendFile(path.join(__dirname, './client/views/index.html'));
+    response.sendFile(path.join(__dirname, './client/views/game.html'));
 });
 
 app.post('/game', function (req, response) {

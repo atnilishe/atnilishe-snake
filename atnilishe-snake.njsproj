@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{cc8c3ae7-0bc3-48e2-8ff9-789c3a6860d1}</ProjectGuid>
     <ProjectHome />
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <StartupFile>server.js</StartupFile>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -16,9 +16,13 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="client\fonts\HVD_Comic_Serif_Pro.otf" />
     <Content Include="client\views\auth.html" />
     <Content Include="client\views\controller.html" />
-    <Content Include="client\views\index.html" />
+    <Content Include="client\views\game.html" />
+    <Content Include="client\views\index.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
@@ -39,9 +43,8 @@
     <Compile Include="server\user.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="atnilishe-snake" />
-    <Folder Include="atnilishe-snake\atnilishe-snake" />
     <Folder Include="client" />
+    <Folder Include="client\fonts\" />
     <Folder Include="client\images\" />
     <Folder Include="client\jsLibs\" />
     <Folder Include="client\views\" />
