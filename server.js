@@ -63,7 +63,7 @@ app.post('/game', function (req, response) {
     response.end();
 });
 
-app.post('/players', function (req, res) {
+app.post('/client/views/players', function (req, res) {
     var url = 'http://ulogin.ru/token.php?token=' + req.body.token + '&host=' + 'localhost';
     var response = res;
     http.get(url, (res) => {
