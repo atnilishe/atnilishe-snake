@@ -41,6 +41,10 @@ app.get('/auth', function (req, response) {
     response.sendFile(path.join(__dirname, './client/views/auth.html'));
 });
 
+app.get('/fonts', function (req, response) {
+    response.sendFile(path.join(__dirname, './client/views/fonts.html'));
+});
+
 app.get('/remote', function (req, res) {
     res.json(req.session.userData.uid);
 });

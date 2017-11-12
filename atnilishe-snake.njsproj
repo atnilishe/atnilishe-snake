@@ -16,6 +16,8 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Content Include="client\fonts\Capture_it.ttf" />
+    <Content Include="client\fonts\Capture_it_2.ttf" />
     <Content Include="client\fonts\HVD_Comic_Serif_Pro.otf" />
     <Content Include="client\views\auth.html" />
     <Content Include="client\views\controller.html" />
@@ -41,6 +43,9 @@
     <Compile Include="server\schemas.js" />
     <Compile Include="server\snake.js" />
     <Compile Include="server\user.js" />
+    <Content Include="client\views\fonts.html">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client" />
