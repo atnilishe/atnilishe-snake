@@ -7,21 +7,22 @@
             font-family: "HVD_Comic_Serif_Pro";
             src: url(/client/fonts/HVD_Comic_Serif_Pro.otf) format("truetype");
         }
-
-        h1 {
-            font-size: 72px;
+        
+        text {
+            font-size: 50px;
             font-family: "HVD_Comic_Serif_Pro", sans-serif;
             background: -webkit-linear-gradient(#FFBC6B, #FF8400);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             -webkit-text-stroke-width: 1px;
             -webkit-text-stroke-color: black;
         }
-
+        
         html {
             display: block;
         }
-
+        
         body {
             width: 100%;
             height: 100%;
@@ -29,10 +30,30 @@
             vertical-align: middle;
             margin: 0px;
         }
-
+        
         .center {
             align-content: center;
             width: 100%;
+        }
+        /* unvisited link */
+        
+        a:link {
+            text-decoration: none;
+        }
+        /* visited link */
+        
+        a:visited {
+            text-decoration: none;
+        }
+        /* mouse over link */
+        
+        a:hover {
+            text-decoration: none;
+        }
+        /* selected link */
+        
+        a:active {
+            text-decoration: none;
         }
     </style>
 </head>
@@ -42,7 +63,7 @@
         <div>
             <img src="/client/images/logo.png">
         </div>
-        <a href="/client/views/auth.html" ><h1>LOGIN</h1></a>
+        <text><a href="/auth">LOGIN</a></text>
     </div>
 </body>
 
