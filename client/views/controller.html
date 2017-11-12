@@ -2,19 +2,8 @@
 
 <head>
     <title>Snake town</title>
+    <link href="/client/style/main.css" rel="stylesheet" />
     <style>
-        html {
-            display: block;
-        }
-
-        body {
-            width: 100%;
-            height: 100%;
-            align-content: center;
-            vertical-align: middle;
-            margin: 0px;
-        }
-
         .center {
             align-content: center;
             width: 100%;
@@ -68,7 +57,7 @@
         movement.down = false;
     }
 
-    window.addEventListener("devicemotion", function (event) {
+    window.addEventListener("devicemotion", function(event) {
         var x = Math.floor(event.accelerationIncludingGravity.x);
         var y = Math.floor(event.accelerationIncludingGravity.y);
         // var z = Math.floor(event.accelerationIncludingGravity.z);
@@ -79,8 +68,7 @@
             } else {
                 up();
             }
-        }
-        else {
+        } else {
             if (y > 0) {
                 right();
             } else {

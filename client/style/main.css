@@ -1,0 +1,55 @@
+@font-face {
+    font-family: "HVD_Comic_Serif_Pro";
+    src: url(/client/fonts/HVD_Comic_Serif_Pro.otf) format("truetype");
+}
+
+text {
+    font-size: 50px;
+    font-family: "HVD_Comic_Serif_Pro", sans-serif;
+    background: -webkit-linear-gradient(#FFBC6B, #FF8400);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+html {
+    display: block;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    align-content: center;
+    vertical-align: middle;
+    margin: 0px;
+}
+
+
+/* unvisited link */
+
+a:link {
+    text-decoration: none;
+}
+
+
+/* visited link */
+
+a:visited {
+    text-decoration: none;
+}
+
+
+/* mouse over link */
+
+a:hover {
+    text-decoration: none;
+}
+
+
+/* selected link */
+
+a:active {
+    text-decoration: none;
+}
